@@ -1,0 +1,35 @@
+# Multi-Mac AI Workflow Configuration
+
+management:
+  host: "0.0.0.0"
+  port: 5000
+  max_workers: 10
+  result_dir: "./results"
+
+workers:
+  # Add your worker Macs here
+  # Example:
+  # - name: "worker-1"
+  #   host: "192.168.1.100"
+  #   ssh_user: "username"
+  #   ssh_key: "~/.ssh/id_rsa"
+  #   max_concurrent_tasks: 3
+
+git:
+  worktree_base: "./worktrees"
+  keep_best_n: 1  # Number of best worktrees to keep
+
+monitoring:
+  interval: 5  # seconds
+  track_gpu: true
+  track_cpu: true
+  track_memory: true
+  track_disk: true
+
+tmux:
+  session_prefix: "ml-task"
+  window_name: "training"
+
+tasks:
+  timeout: 3600  # seconds (1 hour)
+  max_retries: 2
