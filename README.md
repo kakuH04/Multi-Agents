@@ -12,6 +12,8 @@ A distributed task execution system for running ML training and coding tasks acr
 - **Automatic Result Selection**: Choose the best result based on custom metrics
 - **Intelligent Cleanup**: Automatically remove non-optimal worktrees and models
 - **REST API**: Simple HTTP API for task submission and monitoring
+- **ML Training Support**: Load .mat data, train PyTorch models, export to ONNX
+- **Hyperparameter Tuning**: Run multiple experiments in parallel with auto-selection
 
 ## Architecture
 
@@ -50,6 +52,7 @@ A distributed task execution system for running ML training and coding tasks acr
 - Git 2.5+ (for worktree support)
 - tmux
 - SSH access between Macs (for distributed setup)
+- Optional: CUDA-compatible GPU for accelerated training
 
 ### Setup
 
@@ -385,9 +388,49 @@ GET /health
 ## Examples
 
 See the `examples/` directory for:
-- `ml_training_example.py`: ML training task template
+
+**Basic Examples:**
+- `ml_training_example.py`: Simple ML training task template
 - `coding_task_example.py`: Coding/testing task template
 - `run_workflow_example.py`: Complete workflow example
+
+**Advanced ML Examples:**
+- `generate_mat_data.py`: Generate .mat training data
+- `ml_training_mat_onnx.py`: ML training with .mat data and ONNX export
+- `run_workflow_mat_onnx.py`: Complete hyperparameter sweep with ONNX
+
+### ML Training with .mat Data and ONNX Export
+
+The system supports advanced ML workflows:
+
+```bash
+# Generate training data
+python examples/generate_mat_data.py \
+  --type classification \
+  --n-samples 2000 \
+  --n-features 20 \
+  --n-classes 3
+
+# Train model and export to ONNX
+python examples/ml_training_mat_onnx.py \
+  --train-data data/classification_train.mat \
+  --test-data data/classification_test.mat \
+  --epochs 20 \
+  --learning-rate 0.001 \
+  --hidden-sizes 64,32
+
+# Run complete hyperparameter sweep
+python examples/run_workflow_mat_onnx.py
+```
+
+**Features:**
+- Load training data from MATLAB .mat files
+- Train PyTorch neural networks
+- Automatic ONNX export for cross-platform deployment
+- Hyperparameter search across multiple workers
+- Best model selection and automatic cleanup
+
+For detailed ML workflow documentation, see [ML_WORKFLOW_GUIDE.md](ML_WORKFLOW_GUIDE.md)
 
 ## License
 

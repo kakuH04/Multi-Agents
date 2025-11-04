@@ -128,10 +128,44 @@ ls worktrees/task-<name>/
 cd worktrees/task-<name>/
 ```
 
+## ML Training with .mat Data and ONNX
+
+Quick example of advanced ML workflow:
+
+```bash
+# 1. Generate training data
+python examples/generate_mat_data.py \
+  --type classification \
+  --n-samples 1000 \
+  --n-features 20 \
+  --n-classes 3
+
+# 2. Train a model (exports to ONNX automatically)
+python examples/ml_training_mat_onnx.py \
+  --train-data data/classification_train.mat \
+  --test-data data/classification_test.mat \
+  --epochs 15 \
+  --learning-rate 0.001 \
+  --hidden-sizes 64,32
+
+# 3. Run full hyperparameter sweep across workers
+python examples/run_workflow_mat_onnx.py
+```
+
+This will:
+- Load .mat training data
+- Train PyTorch neural networks
+- Export to ONNX format
+- Select best model automatically
+- Clean up non-optimal models
+
+See [ML_WORKFLOW_GUIDE.md](ML_WORKFLOW_GUIDE.md) for detailed ML documentation.
+
 ## Next Steps
 
 - Read the full [README.md](README.md) for detailed documentation
 - Explore [examples/](examples/) for task templates
+- See [ML_WORKFLOW_GUIDE.md](ML_WORKFLOW_GUIDE.md) for ML training guide
 - Customize [config.yaml](config.yaml) for your setup
 - Write your own task scripts following the examples
 
